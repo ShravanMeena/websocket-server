@@ -1,12 +1,42 @@
 const webSocketsServerPort = 8000;
 const webSocketServer = require("websocket").server;
 const http = require("http");
+const express = require("express");
+
+const app = express();
+
+app.get("/", (req, res) => {
+  return res.send("App is running");
+});
 
 // Spinning the http server and the websocket server.
-const server = http.createServer();
-server.listen(process.env.PORT || webSocketsServerPort);
+// const server = http.createServer();
 
-console.log("listening on port 8000");
+const server = http
+  .createServer(function (req, res) {
+    res.writeHead(200, { "Content-Type": "text/html" }); // http header
+    var url = req.url;
+    if (url === "/about") {
+      res.write("<h1>about us page<h1>"); //write a response
+      res.end(); //end the response
+    } else if (url === "/contact") {
+      res.write("<h1>contact us page<h1>"); //write a response
+      res.end(); //end the response
+    } else {
+      res.write("<h1>Hello World!<h1>"); //write a response
+      res.end(); //end the response
+    }
+  })
+  .listen(webSocketsServerPort, function () {
+    console.log("server start at port " + webSocketsServerPort); //the server object listens on port 3000
+  });
+
+// server.listen(process.env.PORT || webSocketsServerPort);
+// server.listen(process.env.PORT || webSocketsServerPort, () => {
+//   console.log(`Server is running on PORT ${webSocketsServerPort}`);
+// });
+
+// console.log("listening on port 8000");
 
 const wsServer = new webSocketServer({
   httpServer: server,
