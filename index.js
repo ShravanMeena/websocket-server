@@ -27,7 +27,7 @@ const server = http
       res.end(); //end the response
     }
   })
-  .listen(webSocketsServerPort, function () {
+  .listen(process.env.PORT || webSocketsServerPort, function () {
     console.log("server start at port " + webSocketsServerPort); //the server object listens on port 3000
   });
 
